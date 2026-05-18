@@ -1,0 +1,228 @@
+/* CompetitionPage.module.css */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  text-align: center;
+  margin: 0;
+  flex: 1;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+
+/* Базовая кнопка (общий стиль для всех кнопок) */
+.buttonBase {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.buttonBase:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.buttonBase:active {
+  transform: translateY(0);
+}
+
+/* Кнопка создания соревнования */
+.createButton {
+  composes: buttonBase;
+  background-color: #28a745;
+  color: white;
+}
+.createButton:hover {
+  background-color: #218838;
+}
+
+/* Кнопки внутри карточки: стартовый список, заявка, турнир, результаты */
+.startingListButton,
+.applyButton,
+.bracketButton,
+.resultsButton {
+  composes: buttonBase;
+  flex: 1;
+  min-width: 100px;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.startingListButton {
+  background-color: #17a2b8;
+  color: white;
+}
+.startingListButton:hover {
+  background-color: #138496;
+}
+
+.applyButton {
+  background-color: #007bff;
+  color: white;
+}
+.applyButton:hover {
+  background-color: #0056b3;
+}
+
+.bracketButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+.bracketButton:hover {
+  opacity: 0.9;
+}
+
+.resultsButton {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+.resultsButton:hover {
+  opacity: 0.9;
+}
+
+/* Группа кнопок в карточке */
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.noCompetitions {
+  text-align: center;
+  padding: 3rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.competitionsList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.competitionCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.competitionCard:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.competitionTitle {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.competitionVenue,
+.competitionDate {
+  margin: 0.4rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.competitionVenue::before {
+  content: "📍";
+  font-size: 1rem;
+}
+
+.competitionDate::before {
+  content: "📅";
+  font-size: 1rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .competitionsList {
+    grid-template-columns: 1fr;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .startingListButton,
+  .applyButton,
+  .bracketButton,
+  .resultsButton {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .buttonBase {
+    padding: 0.7rem 1rem;
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+  .competitionCard {
+    padding: 1rem;
+  }
+
+  .competitionTitle {
+    font-size: 1.1rem;
+  }
+
+  .buttonGroup {
+    gap: 0.5rem;
+  }
+}

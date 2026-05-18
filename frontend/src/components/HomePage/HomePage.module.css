@@ -1,0 +1,251 @@
+/* HomePage.module.css */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 64px);
+}
+
+/* Hero секция */
+.hero {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  opacity: 0.95;
+}
+
+/* Поиск */
+.searchSection {
+  margin-bottom: 2rem;
+}
+
+.searchWrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 1rem 2.5rem 1rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.clearButton {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+/* Результаты */
+.resultsCount {
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.resultsCount strong {
+  color: #667eea;
+  font-size: 1.1rem;
+}
+
+/* Сетка соревнований */
+.competitionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Карточка соревнования */
+.competitionCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.competitionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.cardHeader {
+  padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.competitionTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.dateBadge {
+  flex-shrink: 0;
+  background-color: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cardContent {
+  padding: 1.25rem;
+  flex: 1;
+}
+
+.infoRow {
+  display: flex;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: #666;
+  min-width: 120px;
+}
+
+.infoValue {
+  color: #333;
+  flex: 1;
+}
+
+.cardFooter {
+  padding: 1rem 1.25rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #f0f0f0;
+}
+
+.startingListButton {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.startingListButton:hover {
+  opacity: 0.9;
+}
+
+/* Состояния */
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  font-size: 1.1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  color: #666;
+}
+
+.emptyHint {
+  font-size: 0.9rem;
+  color: #999;
+  margin-top: 0.5rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .competitionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .infoRow {
+    flex-direction: column;
+  }
+
+  .infoLabel {
+    margin-bottom: 0.25rem;
+  }
+}

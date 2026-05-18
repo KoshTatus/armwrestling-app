@@ -1,0 +1,255 @@
+/* Header.module.css */
+.header {
+  background-color: #282c34;
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logoWrapper {
+  margin-bottom: 30px; /* Отступ между логотипом и формой */
+  text-align: center; /* Выравнивание содержимого по центру */
+}
+
+/* Стили для логотипа */
+.logo {
+  width: 100px; /* Ширина логотипа */
+  height: auto; /* Автоматическая высота для сохранения пропорций */
+}
+
+.logoLink {
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.logoLink:hover {
+  opacity: 0.8;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: opacity 0.2s;
+  padding: 0.5rem 0;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.authButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.loginButton {
+  background-color: transparent;
+  border: 1px solid #61dafb;
+  color: #61dafb;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.loginButton:hover {
+  background-color: rgba(97, 218, 251, 0.1);
+  transform: translateY(-1px);
+}
+
+.registerButton {
+  background-color: #61dafb;
+  border: none;
+  color: #282c34;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.registerButton:hover {
+  background-color: #4fa8c7;
+  transform: translateY(-1px);
+}
+
+.logoutButton {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    flex-direction: column;
+  }
+
+  .nav {
+    justify-content: center;
+  }
+
+  .authButtons {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Профиль меню */
+.profileMenuContainer {
+  position: relative;
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #3a4050;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.profileButton:hover {
+  background-color: #4a5568;
+  transform: translateY(-1px);
+}
+
+.profileAvatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.profileArrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.profileButton:hover .profileArrow {
+  transform: rotate(180deg);
+}
+
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0;
+}
+
+.logoutItem {
+  color: #e74c3c;
+  border-top: 1px solid #eee;
+}
+
+.logoutItem:hover {
+  background-color: #fee;
+}
+
+@media (max-width: 768px) {
+  .profileButton {
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .profileAvatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .profileDropdown {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    animation: slideUp 0.3s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .dropdownItem {
+    padding: 1rem;
+    justify-content: center;
+  }
+}

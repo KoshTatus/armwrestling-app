@@ -1,0 +1,751 @@
+/* StartWeightPage.module.css */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.backButton:hover {
+  background-color: #5a6268;
+}
+
+.titleSection {
+  flex: 1;
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Карточка информации о турнире */
+.infoCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.infoCard h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.infoCard p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Форма */
+.formContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.formHeader {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.formHeader p {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.form {
+  padding: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.formGroup label .required {
+  color: #e74c3c;
+  margin-left: 0.25rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.inputError {
+  border-color: #e74c3c;
+}
+
+.inputError:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.unit {
+  position: absolute;
+  right: 12px;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.errorMessage {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #e74c3c;
+}
+
+.helpText {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* Список участников для взвешивания */
+.participantsList {
+  margin-top: 1rem;
+  border-top: 1px solid #e9ecef;
+  padding-top: 1rem;
+}
+
+.participantsTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.participantsBadge {
+  background-color: #667eea;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.participantsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.participantsTable th,
+.participantsTable td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.participantsTable th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.participantsTable tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.weightCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.weightInput {
+  width: 100px;
+  padding: 0.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.weightInput:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.weightStatus {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.weightStatusPending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.weightStatusSet {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Кнопки */
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submitButton {
+  flex: 1;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+.loading {
+  color: #666;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  color: #666;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .form {
+    padding: 1rem;
+  }
+
+  .participantsTable {
+    font-size: 0.8rem;
+  }
+
+  .weightInput {
+    width: 70px;
+    font-size: 0.8rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+}
+
+.warningText {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.savingStatus {
+  font-size: 0.75rem;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.unit {
+  margin-left: 0.25rem;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.bracketButton {
+  flex: 1;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bracketButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .bracketButton,
+  .cancelButton {
+    width: 100%;
+  }
+}
+/* Добавьте в конец файла StartWeightPage.module.css */
+
+.inputChanged {
+  border-color: #f39c12;
+  background-color: #fff8e7;
+}
+
+.inputChanged:focus {
+  border-color: #f39c12;
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+}
+
+.saveButton {
+  padding: 0.4rem 0.8rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+}
+
+.warningText {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.savingStatus {
+  font-size: 0.75rem;
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.unit {
+  margin-left: 0.25rem;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.saveAllButton {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveAllButton:hover:not(:disabled) {
+  background-color: #229954;
+  transform: translateY(-1px);
+}
+
+.saveAllButton:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.bracketButton {
+  flex: 1;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bracketButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .saveAllButton,
+  .bracketButton,
+  .cancelButton {
+    width: 100%;
+  }
+  
+  .participantsTable {
+    min-width: 600px;
+  }
+  
+  .saveButton {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* StartWeightPage.module.css - добавьте новые стили */
+
+.textCenter {
+  text-align: center;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.infoCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.infoCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.infoStat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.infoLabel {
+  opacity: 0.9;
+}
+
+.infoValue {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.progressBar {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progressFill {
+  background-color: #27ae60;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.infoSuccess {
+  text-align: center;
+  background-color: rgba(39, 174, 96, 0.3);
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.inputError {
+  border-color: #e74c3c;
+  background-color: #fee;
+}
+
+.inputError:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  animation: fadeOut 3s ease forwards;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (max-width: 768px) {
+  .infoStat {
+    font-size: 0.9rem;
+  }
+  
+  .infoValue {
+    font-size: 1rem;
+  }
+  
+  .tableWrapper {
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+}

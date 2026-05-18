@@ -1,0 +1,107 @@
+/* UserApplicationsPage.module.css */
+.container {
+  padding: 20px;
+}
+
+.title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loading {
+  font-size: 1.5em;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.error {
+  color: red;
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.noApplications {
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.applicationsList {
+  list-style: none;
+  padding: 0;
+}
+
+.applicationCard {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.applicationTitle {
+  font-size: 1.5em;
+  margin: 0 0 10px;
+}
+
+.applicationStatus {
+  font-size: 1em;
+  color: #555;
+}
+
+.statusPending {
+  color: #fa8e47; /* оранжевый */
+}
+
+.statusApproved {
+  color: #28a745; /* зелёный */
+}
+
+.statusRejected {
+  color: #dc3545; /* красный */
+}
+
+.statusDraft {
+  color: #6c757d; /* серый */
+}
+
+.applicationDetails {
+  font-size: 1em;
+  color: #333;
+}
+
+.filesSection {
+  margin-top: 1rem;
+}
+
+.filesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center; /* Выравнивание по центру */
+  margin-bottom: 0.5rem;
+}
+
+.fileName {
+  margin-right: 1rem; /* Расстояние между названием файла и кнопкой */
+  font-weight: bold;
+}
+
+.downloadButtonInline {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.8rem; /* Меньший размер кнопки */
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem; /* Меньший шрифт */
+}
+
+.downloadButtonInline:hover {
+  background-color: #0056b3;
+}

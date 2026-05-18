@@ -1,0 +1,152 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #007bff;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.footerText {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Контейнер для всей страницы */
+.container {
+  display: flex;
+  flex-direction: column; /* Элементы располагаются вертикально */
+  align-items: center; /* Центрирование по горизонтали */
+  justify-content: center; /* Центрирование по вертикали */
+  min-height: 100vh; /* Полная высота экрана */
+  padding: 20px;
+  background-color: #f9f9f9; /* Светлый фон */
+}
+
+/* Обертка для логотипа */
+.logoWrapper {
+  margin-bottom: 30px; /* Отступ между логотипом и формой */
+  text-align: center; /* Выравнивание содержимого по центру */
+}
+
+/* Стили для логотипа */
+.logo {
+  width: 150px; /* Ширина логотипа */
+  height: auto; /* Автоматическая высота для сохранения пропорций */
+}
+
+/* Контейнер для формы */
+.formContainer {
+  width: 100%;
+  max-width: 400px; /* Максимальная ширина формы */
+  padding: 20px;
+  background-color: #ffffff; /* Белый фон формы */
+  border-radius: 8px; /* Скругление углов */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для отделения формы */
+}
+
+/* Заголовок формы */
+.heading {
+  text-align: center; /* Выравнивание текста по центру */
+  margin-bottom: 20px; /* Отступ между заголовком и полями */
+  font-size: 24px;
+  color: #333333; /* Темно-серый цвет текста */
+}
+
+/* Поля ввода */
+.input {
+  width: 100%; /* Полная ширина */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc; /* Светло-серая граница */
+  border-radius: 4px; /* Скругление углов */
+  transition: border-color 0.3s ease; /* Плавное изменение цвета границы */
+}
+
+.input:focus {
+  border-color: #007bff; /* Изменение цвета границы при фокусе */
+  outline: none; /* Убираем стандартный контур */
+}
+
+/* Кнопка отправки формы */
+.button {
+  width: 100%; /* Полная ширина */
+  padding: 10px;
+  font-size: 16px;
+  color: #ffffff; /* Белый текст */
+  background-color: #007bff; /* Синий фон */
+  border: none;
+  border-radius: 4px; /* Скругление углов */
+  cursor: pointer; /* Курсор указывает на кликабельность */
+  transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+}
+
+.button:hover {
+  background-color: #0056b3; /* Темно-синий фон при наведении */
+}
+
+/* Текст ссылки */
+.footerText {
+  text-align: center; /* Выравнивание текста по центру */
+  margin-top: 15px; /* Отступ сверху */
+  font-size: 14px;
+  color: #666666; /* Серый цвет текста */
+}
+
+.link {
+  color: #007bff; /* Синий цвет ссылки */
+  text-decoration: none; /* Убираем подчеркивание */
+}
+
+.link:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}

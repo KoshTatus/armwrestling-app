@@ -1,0 +1,152 @@
+{
+  "competition_id": 1,
+  "original_participants": [
+    {
+      "id": 9,
+      "name": "Петров Николай Егорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 7,
+      "name": "Егоров Егор Максимович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 12,
+      "name": "Сидоров Иван Сидорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 5,
+      "name": "Иванов Максим Сидорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 4,
+      "name": "Максимов Иван Петрович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 10,
+      "name": "Петров Егор Петрович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 3,
+      "name": "Егоров Иван Егорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 6,
+      "name": "Максимов Петр Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 11,
+      "name": "Максимов Максим Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 8,
+      "name": "Петров Иван Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    }
+  ],
+  "winners_participants": [
+    {
+      "id": 9,
+      "name": "Петров Николай Егорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 7,
+      "name": "Егоров Егор Максимович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 12,
+      "name": "Сидоров Иван Сидорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 5,
+      "name": "Иванов Максим Сидорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 4,
+      "name": "Максимов Иван Петрович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 10,
+      "name": "Петров Егор Петрович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 3,
+      "name": "Егоров Иван Егорович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 6,
+      "name": "Максимов Петр Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 11,
+      "name": "Максимов Максим Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    },
+    {
+      "id": 8,
+      "name": "Петров Иван Иванович",
+      "wins": 0,
+      "losses": 0,
+      "eliminated": false
+    }
+  ],
+  "losers_participants": [],
+  "current_round": 1,
+  "is_finished": false,
+  "champion": null,
+  "updated_at": "2026-05-12T19:36:05.719111"
+}
