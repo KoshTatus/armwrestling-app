@@ -165,14 +165,21 @@ class WordExporter:
                     row_cells = table.add_row().cells
                     athlete_weight = participant.get('athlete_weight')
                     weight_str = f"{athlete_weight}" if athlete_weight else ''
+                    right_hand_place = participant.get('right_hand_place', '')
+                    if right_hand_place is None:
+                        right_hand_place = ''
+                    left_hand_place = participant.get('left_hand_place', '')
+                    if left_hand_place is None:
+                        left_hand_place = ''
+                        
                     cell_values = [
                         str(participant.get('place_by_two_arms', '')),
                         participant.get('full_name', ''),
                         participant.get('rank', '') or '',
                         participant.get('team', '') or '',
-                        str(participant.get('left_hand_place', '')),
+                        str(left_hand_place),
                         str(participant.get('left_points', 0)),
-                        str(participant.get('right_hand_place', '')),
+                        str(right_hand_place),
                         str(participant.get('right_points', 0)),
                         str(participant.get('total_points', 0)),
                         weight_str

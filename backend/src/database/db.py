@@ -151,7 +151,7 @@ def create_db():
         left_hand_list = list(range(1, 11))
         random.shuffle(left_hand_list)
 
-        for i in range(10):
+        for i in range(8):
             # Вставка пользователя
             script = text(
                 f"""

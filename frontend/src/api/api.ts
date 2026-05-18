@@ -434,3 +434,62 @@ export const updateParticipantWeight = async (
   }
 };
 
+export const updateApplicationWeightCategory = async (
+  applicationId: number,
+  newCategoryId: number
+): Promise<any> => {
+  const token = getCookieValue('token');
+  const response = await fetch(`${API_BASE_URL}/competitions/${applicationId}/weight-category?new_category_id=${newCategoryId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || 'Ошибка обновления категории');
+  }
+  return response.json();
+};
+
+export const createManualApplication = async (data: {
+  competition_id: number;
+  age_category_id: number;
+  weight_category_id: number;
+  rank_id: number;
+  team: string;
+  weight: number | null;
+  surname: string;
+  name: string;
+  patronymic: string | null;
+}): Promise<any> => {
+  const token = getCookieValue('token');
+  const response = await fetch(`${API_BASE_URL}/competitions/manual`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || 'Ошибка добавления участника');
+  }
+  return response.json();
+};
+
+export const deleteApplication = async (applicationId: number): Promise<void> => {
+  const token = getCookieValue('token');
+  const response = await fetch(`${API_BASE_URL}/competitions/${applicationId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.detail || 'Ошибка удаления заявки');
+  }
+};

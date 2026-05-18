@@ -1,4 +1,5 @@
 from datetime import datetime, UTC
+from typing import Optional
 
 from sqlalchemy import ForeignKey, TIMESTAMP, Integer, Numeric
 from sqlalchemy.orm import Mapped, mapped_column
@@ -44,7 +45,7 @@ class ApplicationModel(Base):
         Integer, ForeignKey("weight_categories.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
     )
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=True
     )
     competition_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("competitions.id", ondelete="CASCADE"), nullable=False
@@ -61,3 +62,7 @@ class ApplicationModel(Base):
         TIMESTAMP, nullable=False, default=datetime.now(UTC), onupdate=datetime.now(UTC)
     )
     status: Mapped[StatusCode] = mapped_column(nullable=False, default=StatusCode.PENDING)
+
+    surname: Mapped[Optional[str]] = mapped_column(nullable=True)
+    name: Mapped[Optional[str]] = mapped_column(nullable=True)
+    patronymic: Mapped[Optional[str]] = mapped_column(nullable=True)

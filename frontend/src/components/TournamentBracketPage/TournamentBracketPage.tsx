@@ -79,7 +79,7 @@ const TournamentBracketPage: React.FC = () => {
             match.winner === match.first ? styles.winner : ''
           }`}
         >
-          {match.first || '(bye)'}
+          {match.first || 'без соперника'}
         </div>
         <div className={styles.vs}>vs</div>
         <div
@@ -87,7 +87,7 @@ const TournamentBracketPage: React.FC = () => {
             match.winner === match.second ? styles.winner : ''
           }`}
         >
-          {match.second || '(bye)'}
+          {match.second || 'без соперника'}
         </div>
       </div>
     ));

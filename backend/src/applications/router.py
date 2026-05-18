@@ -1,12 +1,17 @@
 from fastapi import APIRouter, Body, UploadFile, Form, HTTPException, Query
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import current_user
+from starlette import status
 
+from src.auth.models import UserModel
+from src.applications.models import ApplicationModel, RankModel, WeightCategoryModel, AgeCategoryModel
+from src.competitions.models import CompetitionModel
 from src.competitions.weight_categories.repository import WeightCategoryRepository
 from src.competitions.age_categories.repository import AgeCategoryRepository
 from src.auth.schemas import UserBase
 from src.auth.repository import AuthRepository
-from src.applications.schemas import ApplicationDBSchema
+from src.applications.schemas import ApplicationDBSchema, ManualApplicationCreateSchema
 from src.applications.repository import ApplicationRepository
 from src.applications.schemas import ApplicationSchema
 from src.applications.types import StatusCode
@@ -55,8 +60,11 @@ def get_user_applications(
         files_validate = [FileSchema.model_validate(row, from_attributes=True) for row in file_results]
         application.files = files_validate
         result = AuthRepository.find_one_or_none_by_id(application.user_id, db)
-        user = UserBase.model_validate(result, from_attributes=True)
-        application.full_name = f"{user.surname} {user.name} {user.patronymic}"
+        if application.user_id:
+            user = UserBase.model_validate(result, from_attributes=True)
+            application.full_name = f"{user.surname} {user.name} {user.patronymic}"
+        else:
+            application.full_name = f"{application.surname} {application.name} {application.patronymic}"
 
     return {
         "data": applications,
@@ -215,35 +223,122 @@ def get_approved_applications_for_weighing(
     )
 
     result = []
-    for application in approved_applications:
-        # Получаем данные пользователя
-        user = AuthRepository.find_one_or_none_by_id(application.user_id, db)
+    for app in approved_applications:
+        if app.user_id:
+            user = db.query(UserModel).filter(UserModel.id == app.user_id).first()
+            surname = user.surname if user else app.surname
+            name = user.name if user else app.name
+            patronymic = user.patronymic if user else app.patronymic
+        else:
+            surname = app.surname
+            name = app.name
+            patronymic = app.patronymic
 
-        # Получаем названия категорий
-        age_category = AgeCategoryRepository.find_one_or_none_by_id(application.age_category_id, db)
-        weight_category = WeightCategoryRepository.find_one_or_none_by_id(application.weight_category_id, db)
-
-        # Формируем ФИО
-        full_name = f"{user.surname} {user.name}"
-        if user.patronymic:
-            full_name += f" {user.patronymic}"
-
+        full_name = f"{surname} {name} {patronymic or ''}".strip()
         result.append({
-            "id": application.id,
-            "application_id": application.id,
+            "application_id": app.id,
             "full_name": full_name,
-            "age_category": age_category.name if age_category else "Не указана",
-            "age_category_id": application.age_category_id,
-            "weight_category": weight_category.name if weight_category else "Не указана",
-            "weight_category_id": application.weight_category_id,
-            "team": application.team,
-            "rank_id": application.rank_id,
-            "weight": application.weight,  # уже сохраненный вес (если есть)
-            "status": application.status,
-            "user_id": application.user_id
+            "weight_category": db.query(WeightCategoryModel).filter(
+                WeightCategoryModel.id == app.weight_category_id).first().name,
+            "weight_category_id": app.weight_category_id,
+            "age_category": db.query(AgeCategoryModel).filter(AgeCategoryModel.id == app.age_category_id).first().name,
+            "team": app.team,
+            "weight": app.weight
         })
-
     return {
         "data": result,
-        "count": len(result)
+    }
+
+
+@router.patch("/{application_id}/weight-category")
+def update_application_weight_category(
+        application_id: int,
+        new_category_id: int,
+        db: Session = Depends(get_db),
+        current_user=Depends(check_user_role(Role.ORGANIZER))
+):
+    """
+    Обновление весовой категории заявки организатором.
+    Используется при предстартовом взвешивании, если вес не соответствует исходной категории.
+    """
+    app = ApplicationRepository.find_one_or_none_by_id(application_id, db)
+    if not app:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+
+    # Проверка существования новой категории
+    new_category = WeightCategoryRepository.find_one_or_none_by_id(new_category_id, db)
+    if not new_category:
+        raise HTTPException(status_code=400, detail="Некорректная весовая категория")
+
+    app.weight_category_id = new_category_id
+    db.commit()
+    db.refresh(app)
+
+    return {
+        "message": "Весовая категория обновлена",
+        "application_id": app.id,
+        "new_category": new_category.name,
+        "new_category_id": new_category.id
+    }
+
+@router.delete("/{application_id}")
+def delete_application(
+        application_id: int,
+        db: Session = Depends(get_db),
+):
+    ApplicationRepository.delete(db, False, **{"id": application_id})
+
+    return {
+        "data": f"Application {application_id} was deleted",
+    }
+
+
+@router.post("/manual", status_code=status.HTTP_201_CREATED)
+def create_manual_application(
+    app_data: ManualApplicationCreateSchema,
+    db: Session = Depends(get_db),
+    current_user = Depends(check_user_role(Role.ORGANIZER))
+):
+    """
+    Создание заявки организатором (без привязки к пользователю).
+    Используется для добавления участников на этапе взвешивания.
+    """
+    # Проверяем, что соревнование существует
+    competition = db.query(CompetitionModel).filter(CompetitionModel.id == app_data.competition_id).first()
+    if not competition:
+        raise HTTPException(status_code=404, detail="Соревнование не найдено")
+
+    # Проверяем категории
+    age_cat = db.query(AgeCategoryModel).filter(AgeCategoryModel.id == app_data.age_category_id).first()
+    if not age_cat:
+        raise HTTPException(status_code=400, detail="Некорректная возрастная категория")
+    weight_cat = db.query(WeightCategoryModel).filter(WeightCategoryModel.id == app_data.weight_category_id).first()
+    if not weight_cat:
+        raise HTTPException(status_code=400, detail="Некорректная весовая категория")
+    rank = db.query(RankModel).filter(RankModel.id == app_data.rank_id).first()
+    if not rank:
+        raise HTTPException(status_code=400, detail="Некорректное спортивное звание")
+
+    # Создаём заявку
+    new_app = ApplicationModel(
+        competition_id=app_data.competition_id,
+        age_category_id=app_data.age_category_id,
+        weight_category_id=app_data.weight_category_id,
+        rank_id=app_data.rank_id,
+        team=app_data.team,
+        weight=app_data.weight,
+        status=StatusCode.APPROVED,  # сразу одобрена
+        user_id=None,
+        surname=app_data.surname,
+        name=app_data.name,
+        patronymic=app_data.patronymic
+    )
+    db.add(new_app)
+    db.commit()
+    db.refresh(new_app)
+
+    return {
+        "message": "Участник успешно добавлен",
+        "application_id": new_app.id,
+        "full_name": f"{app_data.surname} {app_data.name} {app_data.patronymic or ''}".strip()
     }

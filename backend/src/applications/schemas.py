@@ -37,7 +37,21 @@ class ApplicationDBSchema(BaseModel):
     created_at: Optional[datetime] = None
     update_at: Optional[datetime] = None
     status: Optional[StatusCode] = None
+    surname: Optional[str] = None
+    name: Optional[str] = None
+    patronymic: Optional[str] = None
 
 class ApplicationSchema(ApplicationDBSchema):
     files: Optional[list[FileSchema]] = None
     full_name: Optional[str] = None
+
+class ManualApplicationCreateSchema(BaseModel):
+    competition_id: int
+    age_category_id: int
+    weight_category_id: int
+    rank_id: int
+    team: str
+    weight: Optional[float] = None
+    surname: str
+    name: str
+    patronymic: Optional[str] = None

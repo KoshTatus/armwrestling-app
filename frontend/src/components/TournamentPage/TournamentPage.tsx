@@ -459,7 +459,7 @@ const TournamentPage: React.FC = () => {
                 ? 'Сетка проигравших'
                 : 'Гранд-финал'}
             </span>
-            <span className={styles.round}>Раунд {currentMatch.round_num}</span>
+            <span className={styles.round}> Раунд {currentMatch.round_num}</span>
           </div>
           <div className={styles.matchButtons}>
             <button
@@ -483,7 +483,7 @@ const TournamentPage: React.FC = () => {
       {tournamentFinished && (
         <div className={styles.savePanel}>
           <button onClick={handleSaveResults} className={styles.saveButton}>
-            💾 Сохранить результаты в протокол
+            💾 Сохранить результаты
           </button>
         </div>
       )}
