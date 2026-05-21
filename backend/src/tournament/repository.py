@@ -1,10 +1,10 @@
 from src.repository import BaseRepository
-from src.tournament.models import TournamentMatchModel, ActiveTournamentModel
+from src.tournament.models import MatchModel, TournamentModel
 
 
 class TournamentMatchRepository(BaseRepository):
-    model = TournamentMatchModel
+    model = MatchModel
 
 
 class ActiveTournamentRepository(BaseRepository):
-    model = ActiveTournamentModel
+    model = TournamentModel

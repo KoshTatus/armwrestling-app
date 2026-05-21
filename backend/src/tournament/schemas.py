@@ -6,7 +6,7 @@ from typing import Optional
 class StartTournamentRequest(BaseModel):
     age_category_id: int
     weight_category_id: int
-    hand: str  # 'left' или 'right'
+    hand: str
 
 
 class StartTournamentResponse(BaseModel):

@@ -15,7 +15,7 @@ from src.auth.jwt_auth.utils import try_to_decode_token
 from src.tournament.service import Tournament, TournamentParticipant
 from src.tournament.schemas import StartTournamentRequest, StartTournamentResponse, TournamentMatchSchema
 from src.tournament.repository import TournamentMatchRepository, ActiveTournamentRepository
-from src.tournament.models import ActiveTournamentModel, TournamentMatchModel
+from src.tournament.models import TournamentModel, MatchModel
 
 router = APIRouter(prefix="/tournament", tags=["tournament"])
 active_tournaments = {}
@@ -37,12 +37,12 @@ async def start_tournament(
             t.hand == req.hand):
             raise HTTPException(status_code=409, detail=f"Турнир уже существует (ID: {tid})")
     # Проверяем в БД
-    existing = db.query(ActiveTournamentModel).filter(
-        ActiveTournamentModel.competition_id == competition_id,
-        ActiveTournamentModel.age_category_id == req.age_category_id,
-        ActiveTournamentModel.weight_category_id == req.weight_category_id,
-        ActiveTournamentModel.hand == req.hand,
-        ActiveTournamentModel.is_active == True
+    existing = db.query(TournamentModel).filter(
+        TournamentModel.competition_id == competition_id,
+        TournamentModel.age_category_id == req.age_category_id,
+        TournamentModel.weight_category_id == req.weight_category_id,
+        TournamentModel.hand == req.hand,
+        TournamentModel.is_active == True
     ).first()
     if existing:
         raise HTTPException(status_code=409, detail=f"Турнир уже существует (ID: {existing.tournament_id})")
@@ -62,6 +62,10 @@ async def start_tournament(
             full_name = f"{user.surname} {user.name} {user.patronymic}".strip()
             weight = float(app.weight) if app.weight else None
             participants.append(TournamentParticipant(name=full_name, application_id=app.id, weight=weight))
+        else:
+            full_name = f"{app.surname} {app.name} {app.patronymic}".strip()
+            weight = float(app.weight) if app.weight else None
+            participants.append(TournamentParticipant(name=full_name, application_id=app.id, weight=weight))
     if len(participants) < 2:
         raise HTTPException(status_code=400, detail="Не удалось собрать участников")
 
@@ -69,7 +73,7 @@ async def start_tournament(
     tournament = Tournament(participants, db, competition_id, tournament_id, req.hand, req.age_category_id, req.weight_category_id)
     active_tournaments[tournament_id] = tournament
 
-    active_record = ActiveTournamentModel(
+    active_record = TournamentModel(
         tournament_id=tournament_id,
         competition_id=competition_id,
         organizer_id=current_user.id,
@@ -106,9 +110,9 @@ async def websocket_endpoint(
     tournament = active_tournaments.get(tournament_id)
     if tournament is None:
         # Пытаемся восстановить из БД
-        active_record = db.query(ActiveTournamentModel).filter(
-            ActiveTournamentModel.tournament_id == tournament_id,
-            ActiveTournamentModel.is_active == True
+        active_record = db.query(TournamentModel).filter(
+            TournamentModel.tournament_id == tournament_id,
+            TournamentModel.is_active == True
         ).first()
         if not active_record:
             await websocket.send_json({"type": "error", "data": "Tournament not found"})
@@ -188,7 +192,7 @@ async def save_tournament_results(
         # Деактивируем
         if tournament_id in active_tournaments:
             del active_tournaments[tournament_id]
-        active_record = db.query(ActiveTournamentModel).filter(ActiveTournamentModel.tournament_id == tournament_id).first()
+        active_record = db.query(TournamentModel).filter(TournamentModel.tournament_id == tournament_id).first()
         if active_record:
             active_record.is_active = False
             db.commit()
@@ -206,12 +210,12 @@ def check_active_tournament(
     db: Session = Depends(get_db),
     # current_user = Depends(check_user_role(Role.ORGANIZER))
 ):
-    active = db.query(ActiveTournamentModel).filter(
-        ActiveTournamentModel.competition_id == competition_id,
-        ActiveTournamentModel.age_category_id == age_category_id,
-        ActiveTournamentModel.weight_category_id == weight_category_id,
-        ActiveTournamentModel.hand == hand,
-        ActiveTournamentModel.is_active == True
+    active = db.query(TournamentModel).filter(
+        TournamentModel.competition_id == competition_id,
+        TournamentModel.age_category_id == age_category_id,
+        TournamentModel.weight_category_id == weight_category_id,
+        TournamentModel.hand == hand,
+        TournamentModel.is_active == True
     ).first()
     if active:
         return {"exists": True, "tournament_id": active.tournament_id}
@@ -227,11 +231,11 @@ def get_tournament_bracket(
     db: Session = Depends(get_db),
 ):
     # Получаем все матчи
-    matches = db.query(TournamentMatchModel).filter(
-        TournamentMatchModel.competition_id == competition_id,
-        TournamentMatchModel.age_category_id == age_category_id,
-        TournamentMatchModel.weight_category_id == weight_category_id,
-        TournamentMatchModel.hand == hand
+    matches = db.query(MatchModel).filter(
+        MatchModel.competition_id == competition_id,
+        MatchModel.age_category_id == age_category_id,
+        MatchModel.weight_category_id == weight_category_id,
+        MatchModel.hand == hand
     ).all()
 
     # Разделяем

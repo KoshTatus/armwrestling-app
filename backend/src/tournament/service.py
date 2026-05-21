@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from src.tournament.repository import TournamentMatchRepository
 from src.tournament.schemas import TournamentMatchSchema
 from src.results.models import ResultModel
-from src.tournament.models import ActiveTournamentModel
+from src.tournament.models import TournamentModel
 
 
 @dataclass
@@ -89,7 +89,6 @@ class Tournament:
         self.is_finished = False          # добавлено
         self._task: Optional[asyncio.Task] = None
 
-    # ---------- Методы сериализации ----------
     def to_dict(self) -> Dict[str, Any]:
         return {
             "competition_id": self.competition_id,
@@ -148,10 +147,9 @@ class Tournament:
         return tournament
 
     async def save_state_to_db(self, db: Session):
-        """Сохраняет текущее состояние турнира в БД."""
         state_dict = self.to_dict()
-        active = db.query(ActiveTournamentModel).filter(
-            ActiveTournamentModel.tournament_id == self.tournament_id
+        active = db.query(TournamentModel).filter(
+            TournamentModel.tournament_id == self.tournament_id
         ).first()
         if active:
             active.state_json = json.dumps(state_dict, ensure_ascii=False)
@@ -159,13 +157,11 @@ class Tournament:
             db.commit()
 
     async def restore_state_from_db(self, db: Session):
-        """Восстанавливает состояние турнира из БД (без websocket)."""
-        active = db.query(ActiveTournamentModel).filter(
-            ActiveTournamentModel.tournament_id == self.tournament_id
+        active = db.query(TournamentModel).filter(
+            TournamentModel.tournament_id == self.tournament_id
         ).first()
         if active and active.state_json:
             state = json.loads(active.state_json)
-            # Восстанавливаем участников
             for i, p in enumerate(self.original_participants):
                 saved = next((s for s in state["original_participants"] if s["application_id"] == p.application_id), None)
                 if saved:
@@ -193,7 +189,6 @@ class Tournament:
             if self.waiting_for_choice and self.current_match:
                 self.pending_choice = asyncio.Future()
 
-    # ---------- Логика турнира ----------
     def _create_matches(self, participant_list: List[Optional[TournamentParticipant]], bracket: str, round_num: int,
                         start_id: int) -> tuple[List[Match], int]:
         matches = []

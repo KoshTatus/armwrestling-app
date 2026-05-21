@@ -17,20 +17,20 @@ class CompetitionModel(Base):
         ForeignKey("users.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
     )
 
-class CompetitionCategoriesModel(Base):
-    __tablename__ = "competition_categories"
+# class CompetitionCategoriesModel(Base):
+#     __tablename__ = "competition_categories"
 
-    id: Mapped[int_pk]
-    competition_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("competitions.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
-    )
-    age_category_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("age_categories.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
-    )
-    weight_category_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("weight_categories.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
-    )
+#     id: Mapped[int_pk]
+#     competition_id: Mapped[int] = mapped_column(
+#         Integer, ForeignKey("competitions.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
+#     )
+#     age_category_id: Mapped[int] = mapped_column(
+#         Integer, ForeignKey("age_categories.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
+#     )
+#     weight_category_id: Mapped[int] = mapped_column(
+#         Integer, ForeignKey("weight_categories.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False
+#     )
 
-    __table_args__ = (
-        UniqueConstraint('age_category_id', 'weight_category_id', name='uix_age_weight'),
-    )
+#     __table_args__ = (
+#         UniqueConstraint('age_category_id', 'weight_category_id', name='uix_age_weight'),
+#     )

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.database.db import create_db
 from src.router import router
 from src.settings import settings
-from src.tournament.models import TournamentMatchModel, ActiveTournamentModel
+from src.tournament.models import MatchModel, TournamentModel
 
 app = FastAPI()
 
