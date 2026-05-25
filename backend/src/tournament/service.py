@@ -348,7 +348,6 @@ class Tournament:
                 else:
                     await self._send_log("  Losers: пусто")
 
-            # Гранд-финал
             if len(winners_pool) == 1 and len(losers_pool) == 1:
                 await self._send_log(f"\n{'🔥'*60}")
                 await self._send_log("ГРАНД-ФИНАЛ!")

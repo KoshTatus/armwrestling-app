@@ -37,12 +37,9 @@ class Base(DeclarativeBase):
 
 
 def create_db():
-    # Используем raw SQL для удаления таблиц в правильном порядке с CASCADE
     with engine.connect() as conn:
-        # Отключаем проверку внешних ключей временно
         conn.execute(text("SET session_replication_role = 'replica';"))
 
-        # Получаем список всех таблиц в базе данных
         result = conn.execute(text("""
             SELECT tablename FROM pg_tables 
             WHERE schemaname = 'public' 
@@ -51,7 +48,6 @@ def create_db():
 
         tables = [row[0] for row in result]
 
-        # Удаляем все таблицы с CASCADE
         for table in tables:
             try:
                 conn.execute(text(f'DROP TABLE IF EXISTS "{table}" CASCADE;'))
@@ -59,25 +55,20 @@ def create_db():
             except Exception as e:
                 print(f"Warning: Could not drop table {table}: {e}")
 
-        # Включаем обратно проверку внешних ключей
         conn.execute(text("SET session_replication_role = 'origin';"))
         conn.commit()
 
-    # Создаем все таблицы заново
     Base.metadata.create_all(bind=engine)
 
-    # Заполняем начальными данными
     session = SessionLocal()
 
     try:
-        # Вставка начальных данных из SQL файла
         with open("E:/ArmWrestlingApp/backend/src/database/insert.sql", encoding="utf-8") as f:
             script = f.read()
             session.execute(text(script))
             session.commit()
             print("Initial data inserted from insert.sql")
 
-        # Вставка весовых категорий
         weight_category_range = 5
         for weight in range(45, 115, 5):
             script = text(
@@ -90,7 +81,6 @@ def create_db():
             session.execute(script)
             session.commit()
 
-        # Вставка категории 110+ кг
         script = text(
             f"""
                 INSERT INTO public.weight_categories("name", min_weight, max_weight)
@@ -101,7 +91,6 @@ def create_db():
         session.execute(script)
         session.commit()
 
-        # Вставка администратора
         script = text(
             f"""
                 INSERT INTO public.users
@@ -114,7 +103,6 @@ def create_db():
         session.execute(script)
         session.commit()
 
-        # Вставка обычного пользователя
         script = text(
             f"""
                 INSERT INTO public.users
@@ -127,7 +115,6 @@ def create_db():
         session.execute(script)
         session.commit()
 
-        # Вставка соревнования
         script = text(
             f"""
                 INSERT INTO public.competitions
@@ -140,7 +127,6 @@ def create_db():
         session.execute(script)
         session.commit()
 
-        # Генерация случайных участников
         random_surnames = ["Иванов", "Петров", "Егоров", "Сидоров", "Максимов"]
         random_names = ["Иван", "Петр", "Егор", "Николай", "Максим"]
         random_pat = ["Иванович", "Петрович", "Егорович", "Сидорович", "Максимович"]
@@ -152,7 +138,6 @@ def create_db():
         random.shuffle(left_hand_list)
 
         for i in range(8):
-            # Вставка пользователя
             script = text(
                 f"""
                     INSERT INTO public.users
@@ -191,8 +176,6 @@ def create_db():
             # )
             # session.execute(script)
             # session.commit()
-
-        print("Database setup completed successfully!")
 
     except Exception as e:
         print(f"Error populating database: {e}")

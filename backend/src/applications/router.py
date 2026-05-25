@@ -170,10 +170,6 @@ def update_application_weight(
         user_role=Depends(check_user_role(Role.ORGANIZER)),
         db: Session = Depends(get_db)
 ):
-    """
-    Обновление веса участника перед соревнованием
-    """
-    # Проверяем, что заявка принадлежит указанному соревнованию
     application = ApplicationRepository.find_one_or_none(
         db,
         id=application_id,
@@ -183,7 +179,6 @@ def update_application_weight(
     if not application:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
 
-    # Обновляем вес
     result = ApplicationRepository.update(
         {"id": application_id, "competition_id": competition_id},
         db,
@@ -193,7 +188,6 @@ def update_application_weight(
     if result == 0:
         raise HTTPException(status_code=404, detail="Не удалось обновить вес")
 
-    # Возвращаем обновленные данные
     updated_application = ApplicationRepository.find_one_or_none_by_id(application_id, db)
 
     return {
@@ -211,15 +205,10 @@ def get_approved_applications_for_weighing(
         user_role=Depends(check_user_role(Role.ORGANIZER)),
         db: Session = Depends(get_db)
 ):
-    """
-    Получение списка одобренных заявок для предстартового взвешивания
-    Возвращает участников со статусом APPROVED (1)
-    """
-    # Получаем все одобренные заявки на соревнование
     approved_applications = ApplicationRepository.find_all(
         db,
         competition_id=competition_id,
-        status=StatusCode.APPROVED  # 1 - статус APPROVED
+        status=StatusCode.APPROVED
     )
 
     result = []
@@ -257,15 +246,10 @@ def update_application_weight_category(
         db: Session = Depends(get_db),
         current_user=Depends(check_user_role(Role.ORGANIZER))
 ):
-    """
-    Обновление весовой категории заявки организатором.
-    Используется при предстартовом взвешивании, если вес не соответствует исходной категории.
-    """
     app = ApplicationRepository.find_one_or_none_by_id(application_id, db)
     if not app:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
 
-    # Проверка существования новой категории
     new_category = WeightCategoryRepository.find_one_or_none_by_id(new_category_id, db)
     if not new_category:
         raise HTTPException(status_code=400, detail="Некорректная весовая категория")
@@ -299,16 +283,10 @@ def create_manual_application(
     db: Session = Depends(get_db),
     current_user = Depends(check_user_role(Role.ORGANIZER))
 ):
-    """
-    Создание заявки организатором (без привязки к пользователю).
-    Используется для добавления участников на этапе взвешивания.
-    """
-    # Проверяем, что соревнование существует
     competition = db.query(CompetitionModel).filter(CompetitionModel.id == app_data.competition_id).first()
     if not competition:
         raise HTTPException(status_code=404, detail="Соревнование не найдено")
 
-    # Проверяем категории
     age_cat = db.query(AgeCategoryModel).filter(AgeCategoryModel.id == app_data.age_category_id).first()
     if not age_cat:
         raise HTTPException(status_code=400, detail="Некорректная возрастная категория")
@@ -319,7 +297,6 @@ def create_manual_application(
     if not rank:
         raise HTTPException(status_code=400, detail="Некорректное спортивное звание")
 
-    # Создаём заявку
     new_app = ApplicationModel(
         competition_id=app_data.competition_id,
         age_category_id=app_data.age_category_id,
@@ -327,7 +304,7 @@ def create_manual_application(
         rank_id=app_data.rank_id,
         team=app_data.team,
         weight=app_data.weight,
-        status=StatusCode.APPROVED,  # сразу одобрена
+        status=StatusCode.APPROVED,
         user_id=None,
         surname=app_data.surname,
         name=app_data.name,

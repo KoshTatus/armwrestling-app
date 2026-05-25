@@ -55,7 +55,7 @@ class WordExporter:
         if gender is None:
             return ''
         if hasattr(gender, 'value'):
-            return 'М' if gender.value == 1 else 'Ж'   # предположим MALE=1, FEMALE=2
+            return 'М' if gender.value == 1 else 'Ж'
         return str(gender)[0] if str(gender) else ''
 
     @staticmethod
@@ -85,13 +85,11 @@ class WordExporter:
         style.font.name = 'Times New Roman'
         style.font.size = Pt(12)
 
-        # Заголовок документа
         title = doc.add_heading('ПРОТОКОЛ', 0)
         title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
         doc.add_paragraph()
 
-        # Информация о соревнованиях
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         run = p.add_run(f'соревнований по армрестлингу\n"{competition_name}"')
@@ -100,7 +98,6 @@ class WordExporter:
 
         doc.add_paragraph()
 
-        # Информационная таблица
         info_table = doc.add_table(rows=4, cols=2)
         info_table.style = 'Table Grid'
         info_table.autofit = False
@@ -121,7 +118,6 @@ class WordExporter:
                 for cell in info_table.rows[i].cells:
                     WordExporter.set_cell_border(cell)
 
-        # Добавить строку с количеством участников и разбивкой по полу
         if total_participants is not None and male_count is not None and female_count is not None:
             stats_row = info_table.add_row()
             stats_row.cells[0].text = 'Участники:'
@@ -132,7 +128,6 @@ class WordExporter:
 
         doc.add_paragraph()
 
-        # Далее идут возрастные категории и таблицы (как в оригинале)
         for age_group in results:
             doc.add_heading(f'{age_group["age_category"]}', level=1)
             for weight_group in age_group["weight_categories"]:
@@ -191,7 +186,6 @@ class WordExporter:
                             WordExporter.set_cell_border(row_cells[i])
                 doc.add_paragraph()
 
-        # Подписи
         doc.add_paragraph()
         doc.add_paragraph()
         signatures = doc.add_table(rows=2, cols=1)

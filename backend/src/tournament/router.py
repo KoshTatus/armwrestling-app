@@ -29,14 +29,12 @@ async def start_tournament(
     db: Session = Depends(get_db),
     current_user = Depends(check_user_role(Role.ORGANIZER))
 ):
-    # Проверяем в памяти
     for tid, t in active_tournaments.items():
         if (t.competition_id == competition_id and
             t.age_category_id == req.age_category_id and
             t.weight_category_id == req.weight_category_id and
             t.hand == req.hand):
             raise HTTPException(status_code=409, detail=f"Турнир уже существует (ID: {tid})")
-    # Проверяем в БД
     existing = db.query(TournamentModel).filter(
         TournamentModel.competition_id == competition_id,
         TournamentModel.age_category_id == req.age_category_id,
@@ -109,7 +107,6 @@ async def websocket_endpoint(
 
     tournament = active_tournaments.get(tournament_id)
     if tournament is None:
-        # Пытаемся восстановить из БД
         active_record = db.query(TournamentModel).filter(
             TournamentModel.tournament_id == tournament_id,
             TournamentModel.is_active == True
@@ -189,7 +186,6 @@ async def save_tournament_results(
         raise HTTPException(status_code=400, detail="Турнир не завершён")
     try:
         results = await tournament.save_results_to_db(db)
-        # Деактивируем
         if tournament_id in active_tournaments:
             del active_tournaments[tournament_id]
         active_record = db.query(TournamentModel).filter(TournamentModel.tournament_id == tournament_id).first()
@@ -208,7 +204,6 @@ def check_active_tournament(
     weight_category_id: int,
     hand: str,
     db: Session = Depends(get_db),
-    # current_user = Depends(check_user_role(Role.ORGANIZER))
 ):
     active = db.query(TournamentModel).filter(
         TournamentModel.competition_id == competition_id,
@@ -230,7 +225,6 @@ def get_tournament_bracket(
     hand: str,
     db: Session = Depends(get_db),
 ):
-    # Получаем все матчи
     matches = db.query(MatchModel).filter(
         MatchModel.competition_id == competition_id,
         MatchModel.age_category_id == age_category_id,
@@ -238,22 +232,18 @@ def get_tournament_bracket(
         MatchModel.hand == hand
     ).all()
 
-    # Разделяем
     winners = [m for m in matches if m.bracket == "winners"]
     losers = [m for m in matches if m.bracket == "losers"]
     grand = [m for m in matches if m.bracket == "grand_final"]
 
-    # Группируем winners по раунду
     winners_by_round = {}
     for m in winners:
         winners_by_round.setdefault(m.round_num, []).append(m)
 
-    # Группируем losers по раунду
     losers_by_round = {}
     for m in losers:
         losers_by_round.setdefault(m.round_num, []).append(m)
 
-    # Все уникальные раунды (из winners и losers)
     all_rounds = sorted(set(winners_by_round.keys()) | set(losers_by_round.keys()))
     rounds_data = []
     for r in all_rounds:

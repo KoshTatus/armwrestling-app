@@ -34,7 +34,6 @@ class CompetitionRepository(BaseRepository):
             competition_id: int,
             db: Session
     ):
-        # Определяем surname и name из user или из полей заявки
         surname_case = case(
             (ApplicationModel.user_id.isnot(None), UserModel.surname),
             else_=ApplicationModel.surname
@@ -78,7 +77,6 @@ class CompetitionRepository(BaseRepository):
         current_weight_group = None
 
         for row in result:
-            # Новая возрастная категория
             if row.age_category != current_age_category:
                 if current_weight_group:
                     current_age_group["weight_categories"].append(current_weight_group)
@@ -93,7 +91,6 @@ class CompetitionRepository(BaseRepository):
                 current_weight_category = None
                 current_weight_group = None
 
-            # Новая весовая категория
             if row.weight_category != current_weight_category:
                 if current_weight_group:
                     current_age_group["weight_categories"].append(current_weight_group)
@@ -103,7 +100,6 @@ class CompetitionRepository(BaseRepository):
                 }
                 current_weight_category = row.weight_category
 
-            # Добавляем участника
             current_weight_group["participants"].append({
                 "surname": row.surname or "",
                 "name": row.name or "",
@@ -111,11 +107,9 @@ class CompetitionRepository(BaseRepository):
                 "team": row.team
             })
 
-        # Сохраняем последние группы
         if current_weight_group:
             current_age_group["weight_categories"].append(current_weight_group)
         if current_age_group:
             grouped_result.append(current_age_group)
 
         return grouped_result
-

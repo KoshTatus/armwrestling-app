@@ -332,7 +332,7 @@ const TournamentPage: React.FC = () => {
     return (
       <div className={styles.container}>
         <div className={styles.setupPanel}>
-          <h2>Настройка турнира</h2>
+          <h2>Создание турнирной сетки</h2>
           <div className={styles.formGroup}>
             <label>Возрастная категория:</label>
             <select
@@ -391,7 +391,6 @@ const TournamentPage: React.FC = () => {
     );
   }
 
-  // Активный турнир
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -399,7 +398,7 @@ const TournamentPage: React.FC = () => {
           ← Назад к соревнованию
         </button>
         <h1 className={styles.title}>
-          🏆 Турнир ({selectedHand === 'left' ? 'Левая рука' : 'Правая рука'})
+          🏆 Турнирная сетка ({selectedHand === 'left' ? 'Левая рука' : 'Правая рука'})
         </h1>
         <div className={styles.roundInfo}>Раунд: {status.current_round}</div>
       </div>

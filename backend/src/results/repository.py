@@ -16,14 +16,10 @@ class ResultsRepository(BaseRepository):
             competition_id: int,
             db: Session
     ):
-        """Получение результатов соревнований с группировкой по категориям и расчетом очков"""
-
-        # Словарь для перевода места в очки
         place_points = {
             1: 25, 2: 17, 3: 9, 4: 5, 5: 3, 6: 2
         }
 
-        # CASE выражение для конвертации места в очки
         left_points_case = case(
             *[(ResultModel.left_hand_place == place, points) for place, points in place_points.items()],
             else_=0
@@ -33,7 +29,6 @@ class ResultsRepository(BaseRepository):
             else_=0
         )
 
-        # Вычисляем фамилию, имя, отчество (из user или из полей заявки)
         surname_case = case(
             (ApplicationModel.user_id.isnot(None), UserModel.surname),
             else_=ApplicationModel.surname
@@ -49,7 +44,6 @@ class ResultsRepository(BaseRepository):
             else_=ApplicationModel.patronymic
         ).label("patronymic")
 
-        # Пол и дата рождения – только из UserModel (для ручных заявок будут NULL)
         gender_case = case(
             (ApplicationModel.user_id.isnot(None), UserModel.gender),
             else_=None
@@ -99,7 +93,6 @@ class ResultsRepository(BaseRepository):
 
         result = db.execute(query).all()
 
-        # Группировка результатов
         grouped_result = []
         current_age_category = None
         current_age_group = None
@@ -142,7 +135,6 @@ class ResultsRepository(BaseRepository):
                 else:
                     pass
 
-            # Формируем ФИО
             full_name = f"{row.surname or ''} {row.name or ''}".strip()
             if row.patronymic:
                 full_name += f" {row.patronymic}"
