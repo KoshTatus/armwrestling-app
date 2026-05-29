@@ -135,7 +135,7 @@ const RegisterForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           <div style={{ marginBottom: "20px" }}>
             <label style={{ display: "block", marginBottom: "5px" }}>Пол:</label>
             <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-              {[Gender.MALE, Gender.FEMALE].map((genderValue) => (
+              {[Gender.FEMALE, Gender.MALE].map((genderValue) => (
                 <label key={genderValue} style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                   <input
                     type="radio"

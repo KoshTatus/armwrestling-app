@@ -103,7 +103,6 @@ const ApplicationCard: React.FC<{
 
   const handleStatusSelect = (newStatus: string) => {
     setSelectedStatus(newStatus);
-    // Показываем модальное окно для отправки сообщения
     setShowEmailModal(true);
   };
 
@@ -177,7 +176,6 @@ const ApplicationCard: React.FC<{
           </span>
         </p>
 
-        {/* Отображение файлов */}
         {application.files && application.files.length > 0 ? (
           <div className={styles.filesSection}>
             <h3>Прикрепленные файлы:</h3>
@@ -214,7 +212,6 @@ const ApplicationCard: React.FC<{
         </div>
       </li>
 
-      {/* Модальное окно для отправки email */}
       {showEmailModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -269,51 +266,53 @@ const OrganizerApplicationsPage: React.FC = () => {
   const [ageCategories, setAgeCategories] = useState<AgeCategory[]>([]);
   const [weightCategories, setWeightCategories] = useState<WeightCategory[]>([]);
   const [userEmails, setUserEmails] = useState<Map<number, string>>(new Map());
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   useEffect(() => {
-      const loadData = async () => {
-        try {
-          const [data, ageCategoriesData, weightCategoriesData] = await Promise.all([
-            fetchAllApplications(),
-            fetchAgeCategories(),
-            fetchWeightCategories(),
-          ]);
-
-          setApplications(data);
-          setAgeCategories(ageCategoriesData);
-          setWeightCategories(weightCategoriesData);
-
-        } catch (err: any) {
-          console.error("Ошибка загрузки данных:", err);
-          setError("Не удалось загрузить данные.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      loadData();
-    }, []);
+    const loadData = async () => {
+      try {
+        const [data, ageCategoriesData, weightCategoriesData] = await Promise.all([
+          fetchAllApplications(),
+          fetchAgeCategories(),
+          fetchWeightCategories(),
+        ]);
+        setApplications(data);
+        setAgeCategories(ageCategoriesData);
+        setWeightCategories(weightCategoriesData);
+      } catch (err: any) {
+        console.error("Ошибка загрузки данных:", err);
+        setError("Не удалось загрузить данные.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
   const getCategoryNameById = (id: number, categories: { id: number; name: string }[]) => {
     const category = categories.find((cat) => cat.id === id);
     return category ? category.name : "Неизвестно";
   };
 
+  const filteredApplications = useMemo(() => {
+    if (statusFilter === "all") return applications;
+    return applications.filter((app) => app.status.toString() === statusFilter);
+  }, [applications, statusFilter]);
+
   const preparedApplications = useMemo(() => {
-    return applications.map((app) => ({
+    return filteredApplications.map((app) => ({
       ...app,
       ageCategoryName: getCategoryNameById(app.age_category_id, ageCategories),
       weightCategoryName: getCategoryNameById(app.weight_category_id, weightCategories),
       genderLabel: app.gender === "MALE" ? "Мужской" : "Женский",
       email: userEmails.get(app.user_id) || "Email не найден",
     }));
-  }, [applications, ageCategories, weightCategories, userEmails]);
+  }, [filteredApplications, ageCategories, weightCategories, userEmails]);
 
   const handleStatusChange = async (applicationId: number, newStatus: string, userId: number, emailMessage?: string) => {
     try {
       await updateApplicationStatus(applicationId, parseInt(newStatus));
       const user = await fetchUserById(userId);
-
       if (emailMessage) {
         const userEmail = user.login;
         if (userEmail) {
@@ -323,13 +322,11 @@ const OrganizerApplicationsPage: React.FC = () => {
           alert("Предупреждение: Email пользователя не найден, уведомление не отправлено");
         }
       }
-      
       setApplications((prevApplications) =>
         prevApplications.map((app) =>
           app.id === applicationId ? { ...app, status: newStatus } : app
         )
       );
-      
       alert("Статус обновлен" + (emailMessage ? " и уведомление отправлено на почту" : ""));
     } catch (err: any) {
       console.error("Ошибка обновления статуса:", err);
@@ -347,9 +344,25 @@ const OrganizerApplicationsPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Все заявки участников</h1>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Все заявки участников</h1>
+        <div className={styles.filterContainer}>
+          <label htmlFor="statusFilter">Фильтр по статусу: </label>
+          <select
+            id="statusFilter"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className={styles.filterSelect}
+          >
+            <option value="all">Все</option>
+            <option value="0">В процессе</option>
+            <option value="1">Принята</option>
+            <option value="2">Отказано</option>
+          </select>
+        </div>
+      </div>
       {preparedApplications.length === 0 ? (
-        <p className={styles.noApplications}>Нет заявок.</p>
+        <p className={styles.noApplications}>Нет заявок с выбранным статусом.</p>
       ) : (
         <ul className={styles.applicationsList}>
           {preparedApplications.map((application) => (

@@ -23,7 +23,7 @@ class AuthService:
                 surname=user.surname,
                 patronymic=user.patronymic,
                 birth_date=user.birth_date,
-                gender=Gender.MALE if user.gender == 0 else Gender.FEMALE,
+                gender=Gender(user.gender),
             )
 
         new_user = AuthRepository.add(db, **user_info.model_dump())
