@@ -22,6 +22,6 @@ app.add_middleware(
 
 if __name__ == "__main__":
     create_db()
-    uvicorn.run(app, port=5000)
+    uvicorn.run(app, port=5000, host="0.0.0.0")
 
 

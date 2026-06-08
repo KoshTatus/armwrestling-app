@@ -3,7 +3,7 @@ import { UserLogin, UserData, UserRegister, Gender } from "../types/authTypes";
 import { getCookieValue } from "../utils/auth";
 import { CompetitionCreate } from "../types/competition";
 
-export const API_BASE_URL = "http://localhost:5000/api";
+export const API_BASE_URL = "http://127.0.0.1:5000/api";
 
 const handleResponse = async (response: any) => {
   if (!response || response.status >= 400) {

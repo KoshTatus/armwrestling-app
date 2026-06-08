@@ -19,6 +19,12 @@ services:
   backend:
     build: ./backend
     restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: armwrestling
     depends_on:
       db:
         condition: service_healthy
@@ -35,9 +41,19 @@ services:
       - backend
     ports:
       - "3000:80"   # доступ на localhost:3000
-    # volumes:       # для разработки можно расскомментировать, но в production использовать образ
-    #   - ./frontend/src:/app/src
-    #   - ./frontend/public:/app/public
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Монтируем директорию, где будут храниться сертификаты
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
 
 volumes:
   postgres_data:

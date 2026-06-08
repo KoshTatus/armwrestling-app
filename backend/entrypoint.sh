@@ -1,7 +1,5 @@
-#!/bin/sh
 set -e
 
-# Ожидание PostgreSQL (если нужен netcat)
 if ! command -v nc >/dev/null 2>&1; then
     apt-get update && apt-get install -y netcat-openbsd
 fi
@@ -13,5 +11,4 @@ done
 echo "PostgreSQL started"
 
 
-# Запуск Uvicorn
-uvicorn src.main:app --port 5000
+exec uvicorn main:app --port 5000

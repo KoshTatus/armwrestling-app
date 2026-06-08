@@ -73,6 +73,10 @@ def register_user(
         key="token",
         value=data,
         max_age=settings.access_token_expire_seconds,
+        path="/",
+        secure=True,           
+        samesite="none",        
+        httponly=True, 
     )
     
 
@@ -96,6 +100,10 @@ def login_user(
         key="token",
         value=data,
         max_age=settings.access_token_expire_seconds,
+        path="/",
+        secure=True,           
+        samesite="none",        
+        httponly=True, 
     )
 
     return {

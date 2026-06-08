@@ -2,24 +2,19 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Установка системных зависимостей (для psycopg2-binary не требуется gcc/libpq-dev, но оставим для других пакетов)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
+    gcc g++ make python3-dev libpq-dev ca-certificates netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
-# Копируем requirements.txt
-COPY requirements.txt .
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Устанавливаем зависимости через pip (без uv)
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
 
-# Копируем исходный код
 COPY . .
 
-# Скрипт ожидания БД и миграций
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Ожидание PostgreSQL и запуск
+CMD sh -c 'while ! nc -z db 5432; do sleep 0.5; done; \
+           uv run main.py'
 
-EXPOSE 8000
-
-ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 5000

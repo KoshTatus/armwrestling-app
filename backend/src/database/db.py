@@ -63,11 +63,53 @@ def create_db():
     session = SessionLocal()
 
     try:
-        with open("E:/ArmWrestlingApp/backend/src/database/insert.sql", encoding="utf-8") as f:
-            script = f.read()
-            session.execute(text(script))
-            session.commit()
-            print("Initial data inserted from insert.sql")
+        ranks_data = [
+            'без разряда',
+            '3 юн. раз.',
+            '2 юн. раз.',
+            '1 юн. раз',
+            '3 раз.',
+            '2 раз.',
+            '1 раз.',
+            'КМС',
+            'МС',
+            'МСМК',
+            'ЗМС'
+        ]
+
+        for rank_name in ranks_data:
+            session.execute(
+                text("INSERT INTO public.ranks (name) VALUES (:name) ON CONFLICT DO NOTHING"),
+                {"name": rank_name}
+            )
+
+        roles_data = ['PARTICIPANT', 'ORGANIZER', 'ADMIN']
+        for role_name in roles_data:
+            session.execute(
+                text("INSERT INTO public.roles (name) VALUES (:name) ON CONFLICT DO NOTHING"),
+                {"name": role_name}
+            )
+
+        age_categories_data = [
+            ("Юниоры (14-15 лет)", 2011, 2012),
+            ("Юниоры (16-18 лет)", 2008, 2010),
+            ("Юниоры (19-21 лет)", 2005, 2007),
+            ("Юниорки (14-15 лет)", 2011, 2012),
+            ("Юниорки (16-18 лет)", 2008, 2010),
+            ("Юниорки (19-21 лет)", 2005, 2007),
+            ("Мужчины", 2009, None),
+            ("Женщины", 2009, None)
+        ]
+
+        for name, min_year, max_year in age_categories_data:
+            session.execute(
+                text("""
+                    INSERT INTO public.age_categories (name, min_year, max_year)
+                    VALUES (:name, :min_year, :max_year)
+                    ON CONFLICT DO NOTHING
+                """),
+                {"name": name, "min_year": min_year, "max_year": max_year}
+            )
 
         weight_category_range = 5
         for weight in range(45, 115, 5):
